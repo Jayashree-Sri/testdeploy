@@ -1,1 +1,22 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Selfservice - Mobile</title> <script src="https://cdn.tailwindcss.com"></script> </head> <body class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-200 text-slate-800"> <div class="mx-auto max-w-md p-4"> <header class="text-center mb-4"> <h1 class="text-2xl font-semibold tracking-tight">📶 Selfservice - Mobile</h1> <p class="text-sm text-slate-600">Pick what you need and get a ticket.</p> </header> <div class="rounded-2xl border border-white/30 bg-white/40 backdrop-blur shadow-lg p-4" id="card"> <form id="form" class="space-y-4"> <fieldset class="space-y-2"> <legend class="sr-only">Choose a service</legend> <label class="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-slate-200"> <input type="radio" name="service" value="SIM Replacement" class="size-5 accent-slate-800" checked> <span class="font-medium">SIM Replacement</span> </label> <label class="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-slate-200"> <input type="radio" name="service" value="Plan Change" class="size-5 accent-slate-800"> <span class="font-medium">Plan Change</span> </label> <label class="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-slate-200"> <input type="radio" name="service" value="New Connection" class="size-5 accent-slate-800"> <span class="font-medium">New Connection</span> </label> </fieldset>
+  <label class="block">
+    <span class="block text-sm mb-1">Optional note</span>
+    <textarea id="note" class="w-full h-24 resize-y rounded-xl border border-slate-200 bg-white/70 p-3 outline-none focus:ring-2 focus:ring-slate-400" placeholder="Anything we should know?"></textarea>
+  </label>
 
+  <button id="submit" type="button" class="w-full py-3 text-base font-semibold rounded-xl bg-slate-900 text-white active:scale-[.99]">Submit</button>
+</form>
+
+<section id="result" class="hidden space-y-3">
+  <p id="success" class="text-base font-medium"></p>
+  <div class="rounded-xl bg-white/70 border border-slate-200 p-3">
+    <div class="text-sm text-slate-600">Ticket</div>
+    <div id="ticket" class="text-lg font-semibold tracking-wide"></div>
+  </div>
+  <div>
+    <div class="text-sm text-slate-600 mb-1">Checklist</div>
+    <ul id="checklist" class="list-disc pl-5 space-y-1 text-sm"></ul>
+  </div>
+  <button id="startover" class="text-sm underline text-slate-700">Start over</button>
+</section>
+</div> </div> <script> const form = document.getElementById('form'); const submit = document.getElementById('submit'); const result = document.getElementById('result'); const ticketEl = document.getElementById('ticket'); const success = document.getElementById('success'); const checklist = document.getElementById('checklist'); const startover = document.getElementById('startover'); function id5() { let s = Math.random().toString(36).slice(2,7).toUpperCase(); while (s.length < 5) s += Math.floor(Math.random()*36).toString(36).toUpperCase(); return s.slice(0,5); } function getChoice() { const el = form.querySelector('input[name="service"]:checked'); return el ? el.value : 'SIM Replacement'; } function itemsFor(choice) { if (choice === 'SIM Replacement') return ["Bring a government ID","Carry your current (damaged/lost) SIM details"]; if (choice === 'Plan Change') return ["Know your current plan","Payment method if needed"]; return ["Bring a government ID","Proof of address (if required)"]; } submit.addEventListener('click', () => { const choice = getChoice(); ticketEl.textContent = 'SSM-' + id5(); success.textContent = 'Success! Your request for ' + choice + ' is created.'; checklist.innerHTML = ''; itemsFor(choice).forEach(t => { const li = document.createElement('li'); li.textContent = t; checklist.appendChild(li); }); form.classList.add('hidden'); result.classList.remove('hidden'); }); startover.addEventListener('click', () => { form.reset(); form.classList.remove('hidden'); result.classList.add('hidden'); }); </script> </body> </html>
